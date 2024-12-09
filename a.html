@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <img src="./img/1.jpeg" alt="图    片" class ="foobar"  id="baz" style="background:rde;color: white"/>
+</body>
+<script>
+var tagName = document.querySelector('img');
+var imgs = tagName.alt.replace(/\s+/g, ''); 
+console.log("tagName: " + tagName.tagName.toLowerCase());
+console.log("src: "+tagName.src);
+console.log("alt: "+ tagName.alt);
+</script>
+</html>

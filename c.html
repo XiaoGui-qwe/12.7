@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            text-align: center;
+            margin-top: 100px;
+            position: relative;
+        }
+        input,button{
+           margin: 0 10px;
+           height: 25px;
+           border-radius: 5px;
+           margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Base32编码</h1>
+    <input type="text" id="input" placeholder="请输入需要编码的字符串">
+    <button onclick="alert(base32(input.value))">点击编码</button>
+    <input type="text" id="output" placeholder="请输入需要解码的字符串">
+    <button onclick="alert(base32Decode(output.value))">点击解码</button>
+</body>
+<script>
+    var input = document.getElementById("input");
+    function base32(str){
+        var arr =[];
+        var base32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        var result ="";
+        for(var i=0; i<str.length; i++){
+            var index1 = str[i].charCodeAt().toString(2).replace(/^/,"0000000").slice(-8);
+            arr.push(index1);
+        }
+        var arr2 = arr.join("");
+        var len =arr2 +("0").repeat(5-(arr2.length % 5));
+        var arr3 = len.match(/[01]{5}/g);
+        for(var j=0; j<arr3.length; j++){
+            var index2 = parseInt(arr3[j],2);
+            result +=base32[index2];
+        }
+        result = result+("=").repeat(8-(result.length %8));
+        return result;
+
+   }
+
+   var output = document.getElementById("output");
+   function base32Decode(str) {
+    var base32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    var output = "";
+    var buffer = 0;
+    var bitsLeft = 0;
+
+    for (var i = 0; i < str.length; i++) {
+        var char = str[i];
+        if (char === '=') break;
+
+        // 将字符转换为其Base32索引
+        var index = base32.indexOf(char);
+        // 更新缓冲区和剩余位数
+        buffer = (buffer << 5) | index;
+        bitsLeft += 5;
+        // 当我们有至少8位时，可以输出一个字节
+        while (bitsLeft >= 8) {
+            bitsLeft -= 8;
+            var byte = (buffer >> bitsLeft) & 0xFF;
+            output += String.fromCharCode(byte);
+        }
+    }
+
+    return output;
+}
+</script>
+</html>
